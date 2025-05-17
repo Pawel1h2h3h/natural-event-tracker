@@ -30,7 +30,16 @@ bool FileHandler::readFromJson(string filename)
     return true;
 }
 
-bool FileHandler::writeToJson(std::string filename, std::vector<Event> data)
+vector<Event> FileHandler::createEvents(){
+    vector<Event> events;
+    for (auto& [key, value] : j_data.items()) {
+        Event event = Event(value);
+        events.push_back(event);
+}
+    return events;
+}
+
+bool FileHandler::writeToJson(std::string filename)
 {
     fs::path filepath = createFolder();       // np. "output/"
     filepath /= filename;                     // np. "output/plik.json"
@@ -38,15 +47,8 @@ bool FileHandler::writeToJson(std::string filename, std::vector<Event> data)
     fs::create_directories(filepath.parent_path());  // upewnij się, że folder istnieje
 
     json j_array = json::array();  // tablica JSON-owa
-
-    for (auto& event : data) {
-        json j_event = {
-            {"id", event.getId()},
-            {"name", event.getName()},
-            {"latitude", event.getPos().first},
-            {"longitude", event.getPos().second}
-        };
-        j_array.push_back(j_event);
+    for (auto& [key, value] : j_data.items()){
+        j_array.push_back(value);
     }
 
     ofstream file(filepath);

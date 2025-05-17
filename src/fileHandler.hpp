@@ -15,13 +15,15 @@ class FileHandler {
         json j_data;
     public:
 
-        bool writeToJson(string path, vector<Event>);
+        bool writeToJson(string path);
         bool readFromJson(string path);
 
         filesystem::path createFolder();
 
         void setJData(json new_jdata);
         json getJData();
+
+        vector<Event> createEvents();
 
 
 };

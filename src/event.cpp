@@ -1,10 +1,15 @@
 #include <iostream>
 #include "event.hpp"
+using json = nlohmann::json;
 
 Event::Event(){}
 
 Event::Event(int id_, std::string name_, double lat, double lon) {
     id = id_; name = name_; pos = std::make_pair(lat, lon);
+}
+
+Event::Event(json dict){
+    id = dict["id"]; name = dict["name"]; pos = std::make_pair(dict["latitude"], dict["longitude"]);
 }
 
 int Event::getId(){return id;}
@@ -21,7 +26,20 @@ void Event::setPos(double lat, double lon){
     pos = std::make_pair(lat, lon);
 }
 
-void Event::info(){
-    std::cout << id << "\n" << name << "\n";
-    std::cout << pos.first << ", " << pos.second;
+json Event::toJson(){
+            json j_event = {
+            {"id", getId()},
+            {"name", getName()},
+            {"latitude", getPos().first},
+            {"longitude", getPos().second}
+        };
+    return j_event;
+}
+
+void Event::print_json_repr(){
+    std::cout << toJson().dump(4);
+}
+
+void Event::fromJson(json data){
+    Event(data["id"], data["name"], data["latitude"], data["longitude"]);
 }

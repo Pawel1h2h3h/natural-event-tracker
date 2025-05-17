@@ -1,5 +1,8 @@
 #pragma once
 #include <iostream>
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
 
 class Event {
     private:
@@ -9,6 +12,7 @@ class Event {
     public:
         Event();
         Event(int id_, std::string name_, double lat, double lon);
+        Event(json dict);
 
         std::string getName();
         int getId();
@@ -18,5 +22,8 @@ class Event {
         void setName(std::string new_name);
         void setId(int new_id);
 
-        void info();
+        void print_json_repr();
+        json toJson();
+        void fromJson(json data);
+
 };
