@@ -3,6 +3,7 @@
 #include <filesystem>
 #include <fstream>
 #include "event.hpp"
+#include "category.hpp"
 
 using json = nlohmann::json;
 using namespace std;
@@ -24,6 +25,8 @@ class FileHandler {
         json getJData();
 
         vector<Event> createEvents();
+
+        vector<Category> createCategories();
 
 
 };

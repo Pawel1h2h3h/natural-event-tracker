@@ -4,6 +4,7 @@
 #include <filesystem>
 #include "fileHandler.hpp"
 #include "event.hpp"
+#include "category.hpp"
 
 using namespace std;
 namespace fs = std::filesystem;
@@ -37,6 +38,14 @@ vector<Event> FileHandler::createEvents(){
         events.push_back(event);
 }
     return events;
+}
+
+std::vector<Category> FileHandler::createCategories() {
+    std::vector<Category> categories;
+    for (const auto& item : j_data[0]) {
+        categories.push_back(Category::fromJson(item));
+    }
+    return categories;
 }
 
 bool FileHandler::writeToJson(std::string filename)
