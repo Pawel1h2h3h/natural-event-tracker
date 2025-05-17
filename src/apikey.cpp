@@ -1,4 +1,6 @@
 #include <iostream>
+#include <cpr/cpr.h>
+#include <nlohmann/json.hpp>
 #include "apikey.hpp"
 using namespace std;
 
