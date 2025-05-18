@@ -31,12 +31,17 @@ bool FileHandler::readFromJson(string filename)
     return true;
 }
 
-vector<Event> FileHandler::createEvents(){
-    vector<Event> events;
-    for (auto& [key, value] : j_data.items()) {
-        Event event = Event(value);
-        events.push_back(event);
-}
+std::vector<Event> FileHandler::createEvents() {
+    std::vector<Event> events;
+
+    if (j_data.is_array() && j_data.size() > 1 && j_data[1].is_array()) {
+        for (const auto& item : j_data[1]) {
+            events.emplace_back(item);
+        }
+    } else {
+        std::cerr << "Błąd: nieprawidłowy format pliku JSON (brak danych w j_data[1])\n";
+    }
+
     return events;
 }
 

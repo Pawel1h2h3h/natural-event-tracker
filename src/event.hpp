@@ -1,29 +1,52 @@
 #pragma once
 #include <iostream>
 #include <nlohmann/json.hpp>
+#include "models.hpp"
 
 using json = nlohmann::json;
 
+
 class Event {
-    private:
-        int id;
-        std::string name;
-        std::pair<double, double> pos;
+    protected:
+        std::string id;
+        std::string title;
+        std::optional<std::string> description;
+        std::string link;
+        std::optional<std::string> closed;
+
+        std::vector<CategoryS> categories;
+        std::vector<Source> sources;
+        std::vector<Geometry> geometry;
     public:
         Event();
-        Event(int id_, std::string name_, double lat, double lon);
         Event(json dict);
+        virtual ~Event() = default;
 
-        std::string getName();
-        int getId();
-        std::pair<double, double> getPos();
+        std::string getName() const;
+        std::string getId() const;
+        std::pair<double, double> getPos() const;
 
         void setPos(double lat, double lon);
         void setName(std::string new_name);
         void setId(int new_id);
 
-        void print_json_repr();
-        json toJson();
-        void fromJson(json data);
+        // New setter methods
+        void setId(const std::string& new_id);
+        void setTitle(const std::string& new_title);
+        void setDescription(const std::optional<std::string>& new_description);
+        void setLink(const std::string& new_link);
+        void setClosed(const std::optional<std::string>& new_closed);
+
+        // New getter methods
+        const std::string& getTitle() const;
+        const std::optional<std::string>& getDescription() const;
+        const std::string& getLink() const;
+        const std::optional<std::string>& getClosed() const;
+        const std::vector<CategoryS>& getCategories() const;
+        const std::vector<Source>& getSources() const;
+        const std::vector<Geometry>& getGeometry() const;
+
+        virtual void print_json_repr() const;
+        virtual json toJson() const;
 
 };

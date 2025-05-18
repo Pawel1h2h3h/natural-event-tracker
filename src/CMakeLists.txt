@@ -2,7 +2,9 @@ add_library(apikey_lib
             apikey.cpp
             fileHandler.cpp
             event.cpp
-            category.cpp)
+            category.cpp
+            volcanoEvent.cpp
+            models.cpp)
 
 target_link_libraries(apikey_lib PUBLIC cpr::cpr)
 target_include_directories(apikey_lib PUBLIC ${CPR_INCLUDE_DIRS})
