@@ -4,37 +4,48 @@ using json = nlohmann::json;
 
 Event::Event(){}
 
+
+// Obsługa niepewnych danych w konstruktorze
 Event::Event(json dict) {
-    id = dict.at("id").get<std::string>();
-    title = dict.at("title").get<std::string>();
+    id = dict.value("id", "");
+    title = dict.value("title", "");
+
     if (dict.contains("description") && !dict["description"].is_null())
         description = dict["description"].get<std::string>();
-    if (dict.contains("link"))
-        link = dict["link"].get<std::string>();
+
+    link = dict.value("link", "");
+
     if (dict.contains("closed") && !dict["closed"].is_null())
         closed = dict["closed"].get<std::string>();
 
-    if (dict.contains("categories")) {
+    if (dict.contains("categories") && dict["categories"].is_array()) {
         for (const auto& c : dict["categories"]) {
-            categories.push_back(CategoryS{c.at("id"), c.at("title")});
+            categories.push_back(CategoryS{
+                c.value("id", ""),
+                c.value("title", "")
+            });
         }
     }
 
-    if (dict.contains("sources")) {
+    if (dict.contains("sources") && dict["sources"].is_array()) {
         for (const auto& s : dict["sources"]) {
-            sources.push_back(Source{s.at("id"), s.at("url")});
+            Source source;
+            source.id = s.value("id", "");
+            if (s.contains("url") && !s["url"].is_null())
+                source.url = s["url"].get<std::string>();
+            sources.push_back(source);
         }
     }
 
-    if (dict.contains("geometry")) {
+    if (dict.contains("geometry") && dict["geometry"].is_array()) {
         for (const auto& g : dict["geometry"]) {
             Geometry geo;
-            geo.date = g.at("date");
-            geo.type = g.at("type");
-            geo.coordinates = g.at("coordinates").get<std::vector<double>>();
-            if (g.contains("magnitudeUnit"))
+            geo.date = g.value("date", "");
+            geo.type = g.value("type", "");
+            geo.coordinates = g.value("coordinates", std::vector<double>{});
+            if (g.contains("magnitudeUnit") && !g["magnitudeUnit"].is_null())
                 geo.magnitudeUnit = g["magnitudeUnit"].get<std::string>();
-            if (g.contains("magnitudeValue"))
+            if (g.contains("magnitudeValue") && !g["magnitudeValue"].is_null())
                 geo.magnitudeValue = g["magnitudeValue"].get<double>();
             geometry.push_back(geo);
         }

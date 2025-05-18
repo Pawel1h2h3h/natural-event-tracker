@@ -8,15 +8,15 @@ using json = nlohmann::json;
 
 class Event {
     protected:
-        std::string id;
-        std::string title;
-        std::optional<std::string> description;
-        std::string link;
-        std::optional<std::string> closed;
+        std::string id;                         // zawsze obecne
+        std::string title;                      // zawsze obecne
+        std::optional<std::string> description; // może być null
+        std::string link = "";                  // może być pusty string zamiast null
+        std::optional<std::string> closed;      // może być null
 
-        std::vector<CategoryS> categories;
-        std::vector<Source> sources;
-        std::vector<Geometry> geometry;
+        std::vector<CategoryS> categories;       // może być pusta, ale nie null
+        std::vector<Source> sources;            // j.w.
+        std::vector<Geometry> geometry;         // j.w.
     public:
         Event();
         Event(json dict);

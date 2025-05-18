@@ -18,7 +18,7 @@ struct CategoryS {
 
 struct Source {
     std::string id;
-    std::string url;
+    std::optional<std::string> url;
 };
 
 struct Geometry {

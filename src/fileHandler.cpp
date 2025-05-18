@@ -35,11 +35,13 @@ std::vector<Event> FileHandler::createEvents() {
     std::vector<Event> events;
 
     if (j_data.is_array() && j_data.size() > 1 && j_data[1].is_array()) {
+        // format z allEvents.json
         for (const auto& item : j_data[1]) {
             events.emplace_back(item);
         }
-    } else {
-        std::cerr << "Błąd: nieprawidłowy format pliku JSON (brak danych w j_data[1])\n";
+    }
+     else {
+        std::cerr << "Błąd: nieprawidłowy format pliku JSON do utworzenia Eventów\n";
     }
 
     return events;

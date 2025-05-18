@@ -41,16 +41,9 @@ using namespace std;
 
 // }
 
-
-int main() {
-    Api api;
-    FileHandler fh;
-    string key = "H7mCThmUpd7iAwuzs5cMCngPOaDdvLdP4pIEwd4g";
-    api.setApiKey(key);
-
-    // 1. Wszystkie aktywne wydarzenia
+void test_requests(Api api, FileHandler fh) {
+       // 1. Wszystkie aktywne wydarzenia
     api.requestAllOpenEvents();
-    api.setLimit(5);
     auto eventsData = api.getData();
     fh.setJData(eventsData);
     fh.writeToJson("allEvents.json");
@@ -90,6 +83,26 @@ int main() {
     auto singleEvent = api.getData();
     fh.setJData(singleEvent);
     fh.writeToJson("singleEvent.json");
+
+}
+
+int main() {
+    Api api;
+    FileHandler fh;
+    string key = "H7mCThmUpd7iAwuzs5cMCngPOaDdvLdP4pIEwd4g";
+    api.setApiKey(key);
+
+    // test_requests(api, fh);
+    // api.requestCategoryById("volcanoes");
+    // fh.setJData(api.getData());
+    // fh.writeToJson("volcanoesCategory.json");
+
+    fh.readFromJson("volcanoesCategory.json");
+    auto mylist = fh.createEvents();
+
+    mylist[0].print_json_repr();
+
+
 
     return 0;
 }
