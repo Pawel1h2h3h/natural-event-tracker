@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include <nlohmann/json.hpp>
 #include <filesystem>
@@ -6,6 +7,7 @@
 #include "category.hpp"
 
 using json = nlohmann::json;
+namespace fs = std::filesystem;
 using namespace std;
 
 
@@ -19,14 +21,19 @@ class FileHandler {
         bool writeToJson(string path);
         bool readFromJson(string path);
 
+        bool doCategoriesExist();
+
         filesystem::path createFolder();
 
         void setJData(json new_jdata);
         json getJData();
+        fs::path getParentPath();
+        fs::path getDataPath();
 
         vector<Event> createEvents();
 
         vector<Category> createCategories();
+
 
 
 };

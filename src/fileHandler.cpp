@@ -93,3 +93,18 @@ fs::path FileHandler::createFolder()
 
 }
 
+fs::path FileHandler::getParentPath()
+{
+    auto parent_path = fs::current_path().parent_path();
+    return parent_path;
+}
+
+fs::path FileHandler::getDataPath()
+{
+    auto parent_path = fs::current_path().parent_path();
+    return parent_path / "data";
+}
+
+bool FileHandler::doCategoriesExist() {
+    return fs::exists(getParentPath() / "data" / "categories.json");
+}
