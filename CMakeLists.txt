@@ -6,6 +6,8 @@ option(BUILD_QDS_COMPONENTS "Build design studio components" ON)
 project(Nasa_uiApp LANGUAGES CXX)
 
 set(CMAKE_AUTOMOC ON)
+# set(CMAKE_CXX_STANDARD 20)  # lub 17/23
+# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic -O2")
 
 find_package(Qt6 6.2 REQUIRED COMPONENTS Core Gui Qml Quick Positioning Svg)
 
