@@ -6,8 +6,8 @@ option(BUILD_QDS_COMPONENTS "Build design studio components" ON)
 project(Nasa_uiApp LANGUAGES CXX)
 
 set(CMAKE_AUTOMOC ON)
-# set(CMAKE_CXX_STANDARD 20)  # lub 17/23
-# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic -O2")
+set(CMAKE_CXX_STANDARD 20)  # lub 17/23
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic -O2")
 
 find_package(Qt6 6.2 REQUIRED COMPONENTS Core Gui Qml Quick Positioning Svg)
 
@@ -27,15 +27,6 @@ qt_add_resources(Nasa_uiApp "configuration"
         qtquickcontrols2.conf
 )
 
-qt_add_resources(Nasa_uiApp "icons"
-    PREFIX "/icons"
-    FILES
-        icons/default.svg
-        icons/fire.svg
-        icons/flood.svg
-        icons/quake.svg
-        icons/search.jpg
-)
 
 target_link_libraries(Nasa_uiApp PRIVATE
     Qt6::Core
