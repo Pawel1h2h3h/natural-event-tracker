@@ -1,0 +1,3 @@
+# Główne CMakeLists.txt dla nasa_proj
+
+add_subdirectory(src)
