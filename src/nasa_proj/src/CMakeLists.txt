@@ -6,7 +6,6 @@ add_library(apikey_lib
             fileHandler.cpp
             event.cpp
             category.cpp
-            volcanoEvent.cpp
             models.cpp)
 
 find_package(cpr REQUIRED)
