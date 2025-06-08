@@ -151,8 +151,8 @@ Item {
     }
 
     RoundButton { id: firesRoundButton
-                  x: 728
-                  y: 19
+                  x: 702
+                  y: 21
                   width: 84
                   height: 15
                   text: "wildfires"
@@ -163,8 +163,8 @@ Item {
                 }
     }
     RoundButton { id: volcanoRoundButton
-        x: 840
-        y: 19
+        x: 814
+        y: 21
         width: 84
         height: 15
         text: "volcanoes"
@@ -175,20 +175,10 @@ Item {
         }
     }
 
-                  TextEdit {
-                      id: textEdit
-                      x: 74
-                      y: 23
-                      width: 112
-                      height: 19
-                      text: qsTr("Country name...")
-                      font.pixelSize: 12
-                  }
-
                   RoundButton {
                       id: seaLakeIceRoundButton
-                      x: 608
-                      y: 19
+                      x: 582
+                      y: 21
                       width: 102
                       height: 15
                       text: "seaLakeIce"
@@ -229,8 +219,8 @@ Item {
 
                   RoundButton {
                       id: stormRoundButton
-                      x: 482
-                      y: 19
+                      x: 456
+                      y: 21
                       width: 110
                       height: 15
                       text: "severeStorms"
@@ -295,4 +285,115 @@ Item {
         }
     }
 
+    RoundButton {
+        id: dustHazeRoundButton
+        x: 348
+        y: 21
+        width: 102
+        height: 15
+        text: "dustHaze"
+        checkable: true
+        autoExclusive: true
+        onClicked: {
+            mapController.selectEvents(text)
+        }
+    }
+
+    RoundButton {
+        id: earthquakesRoundButton
+        x: 240
+        y: 21
+        width: 102
+        height: 15
+        text: "earthquakes"
+        checkable: true
+        autoExclusive: true
+        onClicked: {
+            mapController.selectEvents(text)
+        }
+    }
+
+    RoundButton {
+        id: floodsRoundButton
+        x: 50
+        y: 21
+        width: 82
+        height: 15
+        text: "floods"
+        checkable: true
+        autoExclusive: true
+        onClicked: {
+            mapController.selectEvents(text)
+        }
+    }
+
+    RoundButton {
+        id: landSlidesRoundButton
+        x: 143
+        y: 21
+        width: 91
+        height: 15
+        text: "landslides"
+        checkable: true
+        autoExclusive: true
+        onClicked: {
+            mapController.selectEvents(text)
+        }
+    }
+
+    RoundButton {
+        id: manMadeRoundButton
+        x: 52
+        y: 584
+        width: 79
+        height: 15
+        text: "manmade"
+        checkable: true
+        autoExclusive: true
+        onClicked: {
+            mapController.selectEvents(text)
+        }
+    }
+
+    RoundButton {
+        id: snowRoundButton
+        x: 137
+        y: 584
+        width: 59
+        height: 15
+        text: "snow"
+        checkable: true
+        autoExclusive: true
+        onClicked: {
+            mapController.selectEvents(text)
+        }
+    }
+
+    RoundButton {
+        id: tempExtremesRoundButton
+        x: 202
+        y: 584
+        width: 108
+        height: 15
+        text: "tempExtremes"
+        checkable: true
+        autoExclusive: true
+        onClicked: {
+            mapController.selectEvents(text)
+        }
+    }
+
+    RoundButton {
+        id: waterColorRoundButton
+        x: 316
+        y: 584
+        width: 85
+        height: 15
+        text: "waterColor"
+        checkable: true
+        autoExclusive: true
+        onClicked: {
+            mapController.selectEvents(text)
+        }
+    }
 }
