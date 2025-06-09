@@ -111,8 +111,6 @@ void MapController::generateCategories(std::string status) {
             fh.setJData(data);
             fh.writeToJson(filename);
             active_cats.push_back(cat);
-        } else {
-            throw std::runtime_error("No events found for category: " + cat.getId());
         }
     }
     setCategories(active_cats);
