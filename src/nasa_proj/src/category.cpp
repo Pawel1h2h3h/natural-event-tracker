@@ -1,7 +1,9 @@
 // category.cpp
 #include "category.hpp"
 #include <iostream>
+#include <sstream>
 #include <nlohmann/json.hpp>
+
 
 Category::Category(const std::string& id,
                    const std::string& title,
@@ -12,11 +14,11 @@ Category::Category(const std::string& id,
 
 Category Category::fromJson(const nlohmann::json& j) {
     return Category(
-        j.at("id"),
-        j.at("title"),
-        j.at("description"),
-        j.at("link"),
-        j.at("layers")
+        j.value("id", ""),
+        j.value("title", ""),
+        j.value("description", ""),
+        j.value("link", ""),
+        j.value("layers", "")
     );
 }
 
@@ -31,10 +33,12 @@ nlohmann::json Category::toJson() const {
 }
 
 void Category::print() const {
-    std::cout << "[" << id << "] " << title << "\n";
-    std::cout << description << "\n";
-    std::cout << "link:   " << link << "\n";
-    std::cout << "layers: " << layers << "\n\n";
+    std::ostringstream oss;
+    oss << "[" << id << "] " << title << "\n"
+        << description << "\n"
+        << "link:   " << link << "\n"
+        << "layers: " << layers << "\n\n";
+    std::cout << oss.str();
 }
 
 const std::string& Category::getId() const { return id; }

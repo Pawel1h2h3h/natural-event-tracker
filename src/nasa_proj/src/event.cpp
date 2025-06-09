@@ -1,11 +1,15 @@
 #include <iostream>
+#include <stdexcept>
 #include "event.hpp"
 using json = nlohmann::json;
 
+/// @class Event
+/// @brief Represents a natural event with metadata, categories, sources, and geometry.
+///
+/// This class parses and stores event data from a JSON object, including optional fields and geometry handling.
+/// It supports JSON serialization and printing in human-readable format.
 Event::Event(){}
 
-
-// Obsługa niepewnych danych w konstruktorze
 Event::Event(json dict) {
     id = dict.value("id", "");
     title = dict.value("title", "");
@@ -42,7 +46,46 @@ Event::Event(json dict) {
             Geometry geo;
             geo.date = g.value("date", "");
             geo.type = g.value("type", "");
-            geo.coordinates = g.value("coordinates", std::vector<double>{});
+            try {
+                const auto& coords = g["coordinates"];
+                if (coords.is_array()) {
+                    if (coords.size() >= 2 && coords[0].is_number()) {
+                        // [lon, lat]
+                        geo.coordinates = coords.get<std::vector<double>>();
+                    } else if (coords[0].is_array() && !coords[0].empty()) {
+                        if (coords[0][0].is_number()) {
+                            // [[lon, lat], [lon, lat], ...]
+                            std::vector<std::vector<double>> extracted;
+                            for (const auto& point : coords) {
+                                if (point.is_array() && point.size() >= 2) {
+                                    extracted.push_back(point.get<std::vector<double>>());
+                                }
+                            }
+                            if (!extracted.empty()) {
+                                geo.coordinatesList = extracted;
+                                geo.coordinates = extracted.front();
+                            }
+                        } else if (coords[0][0].is_array()) {
+                            // [[[lon, lat], ...]] — Polygon
+                            const auto& ring = coords[0];
+                            std::vector<std::vector<double>> extracted;
+                            for (const auto& point : ring) {
+                                if (point.is_array() && point.size() >= 2) {
+                                    extracted.push_back(point.get<std::vector<double>>());
+                                }
+                            }
+                            if (!extracted.empty()) {
+                                geo.coordinatesList = extracted;
+                                geo.coordinates = extracted.front();
+                            }
+                        }
+                    }
+                }
+            } catch (const std::exception& e) {
+                throw std::runtime_error(std::string("Error while processing geometry.coordinates: ") + e.what());
+            } catch (...) {
+                throw std::runtime_error("Unknown error while processing geometry.coordinates");
+            }
             if (g.contains("magnitudeUnit") && !g["magnitudeUnit"].is_null())
                 geo.magnitudeUnit = g["magnitudeUnit"].get<std::string>();
             if (g.contains("magnitudeValue") && !g["magnitudeValue"].is_null())
@@ -103,6 +146,9 @@ json Event::toJson() const {
             {"type", g.type},
             {"coordinates", g.coordinates}
         };
+        if (g.coordinatesList.has_value()) {
+            geo["coordinatesList"] = g.coordinatesList.value();
+        }
         if (g.magnitudeUnit.has_value()) {
             geo["magnitudeUnit"] = g.magnitudeUnit.value();
         }
@@ -118,5 +164,3 @@ json Event::toJson() const {
 void Event::print_json_repr() const {
     std::cout << toJson().dump(4);
 }
-
-

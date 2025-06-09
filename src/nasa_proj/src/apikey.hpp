@@ -4,21 +4,20 @@
 #include "models.hpp"
 #include <category.hpp>
 #pragma once
-using namespace std;
 using json = nlohmann::json;
 
 
 class Api {
 private:
-    string key;
+    std::string key;
     ApiRequest current;
 public:
     void setCategory(const std::string& category_id);
     void setApiKey(const std::string& api_key);
     void setLimit(int count);
-    void requestAllOpenEvents();
-    void requestCategoryById(const std::string& category_id);
-    void requestLayerById(const std::string& layer_id);
+    void requestEvents(std::string status);
+    void requestEventsDays(int days);
+    void requestCategoryById(const std::string& category_id, std::string& status);
     void requestSources();
     void requestMagnitudes();
     void requestCategories();

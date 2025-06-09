@@ -3,6 +3,15 @@
 #include <string>
 #include <nlohmann/json.hpp>
 
+
+
+/**
+ * @class Category
+ * @brief Represents a category with an ID, title, description, link, and layers.
+ *
+ * This class provides methods to construct a category object from JSON data,
+ * convert it back to JSON, and print its details.
+ */
 class Category {
 private:
     std::string id;

@@ -23,11 +23,15 @@ void Api::setLimit(int count) {
     current.params.Add({"limit", std::to_string(count)});
 }
 
-void Api::requestAllOpenEvents() {
+void Api::requestEvents(std::string status) {
     current.url = cpr::Url{"https://eonet.gsfc.nasa.gov/api/v3/events"};
-    current.params = {{"status", "open"}};
+    current.params = {{"status", status}};
 }
 
+void Api::requestEventsDays(int days) {
+    current.url = cpr::Url{"https://eonet.gsfc.nasa.gov/api/v3/events"};
+    current.params = {{"days", std::to_string(days)}};
+}
 
 json Api::getData() {
     auto r = cpr::Get(current.url, current.params, current.headers);
@@ -48,15 +52,11 @@ json Api::getData() {
 
 
 
-void Api::requestCategoryById(const std::string& category_id) {
+void Api::requestCategoryById(const std::string& category_id, std::string& status) {
     current.url = cpr::Url{"https://eonet.gsfc.nasa.gov/api/v3/categories/" + category_id};
-    current.params = {};
+    current.params = {{"status", status}};
 }
 
-void Api::requestLayerById(const std::string& layer_id) {
-    current.url = cpr::Url{"https://eonet.gsfc.nasa.gov/api/v3/layers/" + layer_id};
-    current.params = {};
-}
 
 void Api::requestSources() {
     current.url = cpr::Url{"https://eonet.gsfc.nasa.gov/api/v3/sources"};

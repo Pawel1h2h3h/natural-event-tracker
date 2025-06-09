@@ -8,31 +8,56 @@
 
 using json = nlohmann::json;
 namespace fs = std::filesystem;
-using namespace std;
 
-
+/// @class FileHandler
+/// @brief Handles reading, writing, and managing JSON-based event and category data.
+///
+/// This class is responsible for operations on JSON files such as reading from and writing to disk,
+/// parsing structured data for events and categories, and managing file system directories relevant to the data.
+/// It provides a consistent interface for creating, checking, and clearing data used in the application.
 class FileHandler {
     private:
-        string path_read;
-        string path_write;
+        std::string path_read;
+        std::string path_write;
         json j_data;
     public:
 
-        bool writeToJson(string path);
-        bool readFromJson(string path);
+        /// Returns the stored JSON data.
+        const json& getJData() const;
 
+        /// Writes JSON data to a file in the output directory.
+        bool writeToJson(const std::string& path);
+
+        /// Reads JSON data from a file in the data directory.
+        bool readFromJson(const std::string& path);
+
+        /// Checks if categories exist.
         bool doCategoriesExist();
 
-        filesystem::path createFolder();
+        /// Creates the data folder if it doesn't exist.
+        std::filesystem::path createFolder();
 
-        void setJData(json new_jdata);
-        json getJData();
+        /// Sets the JSON data.
+        void setJData(const json& new_jdata);
+
+        /// Clears the data directory.
+        void clearDataDir();
+
+
+        /// Returns the parent path.
         fs::path getParentPath();
+
+        /// Returns the path to the data directory.
         fs::path getDataPath();
 
-        vector<Event> createEvents();
+        /// Creates a vector of Event objects.
+        std::vector<Event> createEvents();
 
-        vector<Category> createCategories();
+        /// Creates a vector of recent Event objects.
+        std::vector<Event> createRecentEvents();
+
+        /// Creates a vector of Category objects.
+        std::vector<Category> createCategories();
 
 
 

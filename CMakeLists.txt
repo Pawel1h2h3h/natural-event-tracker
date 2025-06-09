@@ -3,11 +3,14 @@ cmake_minimum_required(VERSION 3.21.1)
 option(LINK_INSIGHT "Link Qt Insight Tracker library" ON)
 option(BUILD_QDS_COMPONENTS "Build design studio components" ON)
 
+
 project(Nasa_uiApp LANGUAGES CXX)
+
+include(FetchContent)
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_CXX_STANDARD 20)  # lub 17/23
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic -O2")
+add_compile_options(-Wall -Wextra -Wpedantic -Werror)
 
 find_package(Qt6 6.2 REQUIRED COMPONENTS Core Gui Qml Quick Positioning Svg)
 
@@ -36,7 +39,7 @@ target_link_libraries(Nasa_uiApp PRIVATE
     Qt6::Positioning
     Qt6::Svg
 )
-
+qt_policy(SET QTP0004 NEW)
 set(QT_QML_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/qml)
 set(QML_IMPORT_PATH ${QT_QML_OUTPUT_DIRECTORY}
     CACHE STRING "Import paths for Qt Creator's code model"
@@ -70,3 +73,4 @@ install(TARGETS Nasa_uiApp
 # make IDEs aware of the QML import path
 set(QML_IMPORT_PATH ${PROJECT_BINARY_DIR}/qml CACHE PATH
     "Path to the custom QML components defined by the project")
+

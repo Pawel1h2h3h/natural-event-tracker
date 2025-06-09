@@ -7,9 +7,13 @@ import QtPositioning 6.5
 
 Item {
     id: mapItem
-    width: 200
-    height: 200
+    width: 1060
+    height: 640
     visible: true
+
+    function centerMapOn(lat, lon, title) {
+        map.center = QtPositioning.coordinate(lat, lon)
+    }
 
 
     Rectangle {
@@ -34,13 +38,13 @@ Item {
                 property real zoomSpeed: 0.2
 
                 onWheel: (event) => {
-                    if (event.angleDelta.y > 0 && map.zoomLevel < 21) {
-                        map.zoomLevel += zoomSpeed
-                    } else if (event.angleDelta.y < 0 && map.zoomLevel > 1) {
-                        map.zoomLevel -= zoomSpeed
-                    }
-                    event.accepted = true
-                }
+                             if (event.angleDelta.y > 0 && map.zoomLevel < 21) {
+                                 map.zoomLevel += zoomSpeed
+                             } else if (event.angleDelta.y < 0 && map.zoomLevel > 1) {
+                                 map.zoomLevel -= zoomSpeed
+                             }
+                             event.accepted = true
+                         }
             }
 
             DragHandler {
@@ -63,16 +67,16 @@ Item {
                 id: pinch
                 target: null
                 onActiveChanged: if (active) {
-                    map.startCentroid = map.toCoordinate(pinch.centroid.position, false)
-                }
+                                     map.startCentroid = map.toCoordinate(pinch.centroid.position, false)
+                                 }
                 onScaleChanged: (delta) => {
-                    map.zoomLevel += Math.log2(delta)
-                    map.alignCoordinateToPoint(map.startCentroid, pinch.centroid.position)
-                }
+                                    map.zoomLevel += Math.log2(delta)
+                                    map.alignCoordinateToPoint(map.startCentroid, pinch.centroid.position)
+                                }
                 onRotationChanged: (delta) => {
-                    map.bearing -= delta
-                    map.alignCoordinateToPoint(map.startCentroid, pinch.centroid.position)
-                }
+                                       map.bearing -= delta
+                                       map.alignCoordinateToPoint(map.startCentroid, pinch.centroid.position)
+                                   }
                 grabPermissions: PointerHandler.TakeOverForbidden
             }
 
@@ -100,13 +104,13 @@ Item {
                             anchors.fill: parent
                             acceptedButtons: Qt.RightButton
                             onClicked: (mouse) => {
-                                if (mouse.button === Qt.RightButton) {
-                                    eventPopup.eventData = parent.eventData;
-                                    eventPopup.x = (typeof mouse.screenX === "number" ? mouse.screenX : map.width / 2);
-                                    eventPopup.y = (typeof mouse.screenY === "number" ? mouse.screenY : map.height / 2);
-                                    eventPopup.open();
-                                }
-                            }
+                                           if (mouse.button === Qt.RightButton) {
+                                               eventPopup.eventData = parent.eventData;
+                                               eventPopup.x = (typeof mouse.screenX === "number" ? mouse.screenX : map.width / 2);
+                                               eventPopup.y = (typeof mouse.screenY === "number" ? mouse.screenY : map.height / 2);
+                                               eventPopup.open();
+                                           }
+                                       }
                         }
                     }
                 }
@@ -114,127 +118,269 @@ Item {
 
             Connections {
                 target: mapController
-                function onAddMarker(name, coordinate, type, color, date, description, link) {
+
+                function onAddMarker(name, coordinate, type, color, date, description, link, magnitude, sources, categories, coordinates) {
                     const pin = markerComponent.createObject(map, {
-                        coordinate: coordinate,
-                        "sourceItem.color": color,
-                        "sourceItem.eventData": {
-                            title: name,
-                            category: type,
-                            coordinate: coordinate,
-                            date: date,
-                            description: description,
-                            link: link
-                        }
-                    });
+                                                                 coordinate: coordinate,
+                                                                 "sourceItem.color": color,
+                                                                 "sourceItem.eventData": {
+                                                                     title: name,
+                                                                     category: type,
+                                                                     coordinate: coordinate,
+                                                                     date: date,
+                                                                     description: description,
+                                                                     link: link,
+                                                                     magnitude: magnitude,
+                                                                     sources: sources,
+                                                                     categories: categories,
+                                                                     coordinatesInfo: coordinates
+                                                                 }
+                                                             });
 
                     map.addMapItem(pin);
                 }
-            }
-
-            Connections {
-                target: mapController
 
                 function onClearMarkers() {
                     for (let i = map.mapItems.length - 1; i >= 0; i--) {
                         const item = map.mapItems[i];
-                        // Jeśli to instancja utworzona przez markerComponent – usuń
                         if (item.sourceItem && item.sourceItem instanceof Rectangle) {
                             map.removeMapItem(item);
-                            item.destroy();  // usuwa obiekt z pamięci
+                            item.destroy();
                         }
                     }
                 }
             }
+
         }
 
-    }
+        RoundButton { id: firesRoundButton
+            x: 691
+            y: -30
+            width: 84
+            height: 15
+            text: "wildfires"
+            autoExclusive: true
+            checkable: true
+            onClicked: {
+                mapController.selectEvents(text)
+            }
+        }
+        RoundButton { id: volcanoRoundButton
+            x: 781
+            y: -30
+            width: 84
+            height: 15
+            text: "volcanoes"
+            autoExclusive: true
+            checkable: true
+            onClicked: {
+                mapController.selectEvents(text)
+            }
+        }
 
-    RoundButton { id: firesRoundButton
-                  x: 702
-                  y: 21
-                  width: 84
-                  height: 15
-                  text: "wildfires"
-                  autoExclusive: true
-                  checkable: true
-                  onClicked: {
-                    mapController.selectEvents(text)
-                }
-    }
-    RoundButton { id: volcanoRoundButton
-        x: 814
-        y: 21
-        width: 84
-        height: 15
-        text: "volcanoes"
-        autoExclusive: true
-        checkable: true
-        onClicked: {
-            mapController.selectEvents(text)
+        RoundButton {
+            id: seaLakeIceRoundButton
+            x: 555
+            y: -30
+            width: 102
+            height: 15
+            text: "seaLakeIce"
+            autoExclusive: true
+            checkable: true
+            onClicked: {
+                mapController.selectEvents(text)
+            }
+        }
+        RoundButton {
+            id: dustHazeRoundButton
+            x: 310
+            y: -30
+            width: 102
+            height: 15
+            text: "dustHaze"
+            checkable: true
+            autoExclusive: true
+            onClicked: {
+                mapController.selectEvents(text)
+            }
+        }
+
+        RoundButton {
+            id: earthquakesRoundButton
+            x: 202
+            y: -30
+            width: 102
+            height: 15
+            text: "earthquakes"
+            checkable: true
+            autoExclusive: true
+            onClicked: {
+                mapController.selectEvents(text)
+            }
+        }
+
+        RoundButton {
+            id: floodsRoundButton
+            x: 12
+            y: -30
+            width: 82
+            height: 15
+            text: "floods"
+            checkable: true
+            autoExclusive: true
+            onClicked: {
+                mapController.selectEvents(text)
+            }
+        }
+
+        RoundButton {
+            id: landSlidesRoundButton
+            x: 105
+            y: -30
+            width: 91
+            height: 15
+            text: "landslides"
+            checkable: true
+            autoExclusive: true
+            onClicked: {
+                mapController.selectEvents(text)
+            }
+        }
+
+        RoundButton {
+            id: manMadeRoundButton
+            x: 14
+            y: 533
+            width: 79
+            height: 15
+            text: "manmade"
+            checkable: true
+            autoExclusive: true
+            onClicked: {
+                mapController.selectEvents(text)
+            }
+        }
+
+        RoundButton {
+            id: snowRoundButton
+            x: 99
+            y: 533
+            width: 59
+            height: 15
+            text: "snow"
+            checkable: true
+            autoExclusive: true
+            onClicked: {
+                mapController.selectEvents(text)
+            }
+        }
+
+        RoundButton {
+            id: tempExtremesRoundButton
+            x: 164
+            y: 533
+            width: 108
+            height: 15
+            text: "tempExtremes"
+            checkable: true
+            autoExclusive: true
+            onClicked: {
+                mapController.selectEvents(text)
+            }
+        }
+
+        RoundButton {
+            id: waterColorRoundButton
+            x: 278
+            y: 533
+            width: 85
+            height: 15
+            text: "waterColor"
+            checkable: true
+            autoExclusive: true
+            onClicked: {
+                mapController.selectEvents(text)
+            }
+        }
+
+        RoundButton {
+            id: clearRoundButton
+            x: 903
+            y: 25
+            width: 93
+            height: 15
+            text: "clear"
+            checkable: true
+            autoExclusive: true
+            onClicked: {
+                mapController.clearEvents()
+            }
+        }
+
+        RoundButton {
+            id: openEventsRoundButton
+            objectName: "openEventsRoundButton"
+            x: 903
+            y: 55
+            width: 93
+            height: 15
+            text: "show open"
+            checkable: true
+            autoExclusive: true
+            onClicked: {
+                mapController.generateEvents(objectName)
+            }
+        }
+        RoundButton {
+            id: allEventsRoundButton
+            objectName: "allEventsRoundButton"
+            x: 903
+            y: 84
+            width: 93
+            height: 15
+            text: "show all"
+            checkable: true
+            autoExclusive: true
+            onClicked: {
+                mapController.generateEvents(objectName)
+            }
+        }
+
+        RoundButton {
+            id: closedEventsRoundButton
+            objectName: "closedEventsRoundButton"
+            x: 903
+            y: 117
+            width: 93
+            height: 15
+            text: "show closed"
+            checkable: true
+            autoExclusive: true
+            onClicked: {
+                mapController.generateEvents(objectName)
+            }
+        }
+
+        RoundButton {
+            id: stormRoundButton
+            x: 422
+            y: -30
+            width: 110
+            height: 15
+            text: "severeStorms"
+            checkable: true
+            autoExclusive: true
+            onClicked: {
+                mapController.selectEvents(text)
+            }
         }
     }
 
-                  RoundButton {
-                      id: seaLakeIceRoundButton
-                      x: 582
-                      y: 21
-                      width: 102
-                      height: 15
-                      text: "seaLakeIce"
-                      autoExclusive: true
-                      checkable: true
-                      onClicked: {
-                        mapController.selectEvents(text)
-                      }
-                  }
-
-                  RoundButton {
-                      id: clearRoundButton
-                      x: 930
-                      y: 51
-                      width: 69
-                      height: 15
-                      text: "clear"
-                      checkable: true
-                      autoExclusive: true
-                      onClicked: {
-                          mapController.clearEvents()
-                      }
-                  }
-
-                  RoundButton {
-                      id: renderRoundButton
-                      x: 930
-                      y: 81
-                      width: 69
-                      height: 15
-                      text: "render"
-                      checkable: true
-                      autoExclusive: true
-                      onClicked: {
-                          mapController.generateAllEvents()
-                      }
-                  }
-
-                  RoundButton {
-                      id: stormRoundButton
-                      x: 456
-                      y: 21
-                      width: 110
-                      height: 15
-                      text: "severeStorms"
-                      checkable: true
-                      autoExclusive: true
-                      onClicked: {
-                          mapController.selectEvents(text)
-                      }
-                  }
 
     Popup {
         id: eventPopup
         width: 250
-        height: 120
+        height: Math.min(contentColumn.implicitHeight + 20, 400)
         modal: true
         focus: true
         closePolicy: Popup.CloseOnPressOutside
@@ -253,10 +399,11 @@ Item {
                 contentHeight: contentColumn.height
                 contentWidth: contentColumn.width
                 clip: true
+                maximumFlickVelocity: 5000
 
                 Column {
                     id: contentColumn
-                    width: Math.max(parent.width, 500)
+                    width: parent.width
                     spacing: 5
                     padding: 10
 
@@ -264,6 +411,11 @@ Item {
                     Text { text: "Category: " + (eventPopup.eventData?.category || "N/A") }
                     Text { text: "Coordinates: " + (eventPopup.eventData?.coordinate?.latitude || "?") + ", " + (eventPopup.eventData?.coordinate?.longitude || "?") }
                     Text { text: "Date: " + (eventPopup.eventData?.date || "N/A") }
+                    // Additional info fields
+                    Text { text: "Magnitude: " + (eventPopup.eventData?.magnitude || "N/A") }
+                    Text { text: "Sources: " + (eventPopup.eventData?.sources || "N/A") }
+                    Text { text: "Categories: " + (eventPopup.eventData?.categories || "N/A") }
+                    Text { text: "Location: " + (eventPopup.eventData?.coordinatesInfo || "N/A") }
                     Text { text: "Description: " + (eventPopup.eventData?.description || "N/A") }
                     Text {
                         text: "Link"
@@ -282,118 +434,6 @@ Item {
                     policy: ScrollBar.AsNeeded
                 }
             }
-        }
-    }
-
-    RoundButton {
-        id: dustHazeRoundButton
-        x: 348
-        y: 21
-        width: 102
-        height: 15
-        text: "dustHaze"
-        checkable: true
-        autoExclusive: true
-        onClicked: {
-            mapController.selectEvents(text)
-        }
-    }
-
-    RoundButton {
-        id: earthquakesRoundButton
-        x: 240
-        y: 21
-        width: 102
-        height: 15
-        text: "earthquakes"
-        checkable: true
-        autoExclusive: true
-        onClicked: {
-            mapController.selectEvents(text)
-        }
-    }
-
-    RoundButton {
-        id: floodsRoundButton
-        x: 50
-        y: 21
-        width: 82
-        height: 15
-        text: "floods"
-        checkable: true
-        autoExclusive: true
-        onClicked: {
-            mapController.selectEvents(text)
-        }
-    }
-
-    RoundButton {
-        id: landSlidesRoundButton
-        x: 143
-        y: 21
-        width: 91
-        height: 15
-        text: "landslides"
-        checkable: true
-        autoExclusive: true
-        onClicked: {
-            mapController.selectEvents(text)
-        }
-    }
-
-    RoundButton {
-        id: manMadeRoundButton
-        x: 52
-        y: 584
-        width: 79
-        height: 15
-        text: "manmade"
-        checkable: true
-        autoExclusive: true
-        onClicked: {
-            mapController.selectEvents(text)
-        }
-    }
-
-    RoundButton {
-        id: snowRoundButton
-        x: 137
-        y: 584
-        width: 59
-        height: 15
-        text: "snow"
-        checkable: true
-        autoExclusive: true
-        onClicked: {
-            mapController.selectEvents(text)
-        }
-    }
-
-    RoundButton {
-        id: tempExtremesRoundButton
-        x: 202
-        y: 584
-        width: 108
-        height: 15
-        text: "tempExtremes"
-        checkable: true
-        autoExclusive: true
-        onClicked: {
-            mapController.selectEvents(text)
-        }
-    }
-
-    RoundButton {
-        id: waterColorRoundButton
-        x: 316
-        y: 584
-        width: 85
-        height: 15
-        text: "waterColor"
-        checkable: true
-        autoExclusive: true
-        onClicked: {
-            mapController.selectEvents(text)
         }
     }
 }

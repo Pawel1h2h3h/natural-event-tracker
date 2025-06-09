@@ -5,18 +5,31 @@
 
 using json = nlohmann::json;
 
-
+/// @class Event
+/// @brief Represents a structured data model for a single natural event, including metadata and spatial data.
+///
+/// The Event class encapsulates the full structure of a natural event record, such as one returned from
+/// a public API (e.g., NASA EONET). It stores identifiers, title, optional description and closure date,
+/// a hyperlink, and associated categories, sources, and geometries.
+///
+/// It supports complete access through getters and setters, and can be constructed directly from a JSON object.
+/// It also provides serialization and printable output for debugging or data exporting.
+///
+/// Example uses include:
+/// - Visualizing or filtering natural events in an application,
+/// - Converting structured JSON data into usable objects,
+/// - Storing and transmitting event state.
 class Event {
     protected:
-        std::string id;                         // zawsze obecne
-        std::string title;                      // zawsze obecne
-        std::optional<std::string> description; // może być null
-        std::string link = "";                  // może być pusty string zamiast null
-        std::optional<std::string> closed;      // może być null
+        std::string id;
+        std::string title;
+        std::optional<std::string> description;
+        std::string link = "";
+        std::optional<std::string> closed;
 
-        std::vector<CategoryS> categories;       // może być pusta, ale nie null
-        std::vector<Source> sources;            // j.w.
-        std::vector<Geometry> geometry;         // j.w.
+        std::vector<CategoryS> categories;
+        std::vector<Source> sources;
+        std::vector<Geometry> geometry;
     public:
         Event();
         Event(json dict);

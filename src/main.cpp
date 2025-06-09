@@ -1,8 +1,10 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
+
 #include "mapController.hpp"
 
+using namespace Qt::StringLiterals;
 
 
 int main(int argc, char *argv[])
@@ -14,7 +16,7 @@ int main(int argc, char *argv[])
     MapController mapController;
     engine.rootContext()->setContextProperty("mapController", &mapController);
 
-    const QUrl url(u"qrc:/qt/qml/Main/main.qml"_qs);
+    const QUrl url(u"qrc:/qt/qml/Main/main.qml"_s);
     QObject::connect(
         &engine, &QQmlApplicationEngine::objectCreated,
         &app, [url](QObject *obj, const QUrl &objUrl) {
@@ -24,9 +26,7 @@ int main(int argc, char *argv[])
         Qt::QueuedConnection);
 
     engine.load(url);
-
-    mapController.generateExistingCategories();
-
+    mapController.generateRecentEvents(7);
 
     return app.exec();
 }

@@ -15,7 +15,8 @@ FetchContent_Declare(
 FetchContent_GetProperties(ds)
 FetchContent_Populate(ds)
 
-target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE
+
+set(QDS_COMPONENT_LIBS
     QuickStudioComponentsplugin
     QuickStudioEffectsplugin
     QuickStudioApplicationplugin
@@ -26,6 +27,14 @@ target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE
     QuickStudioEventSystemplugin
     QuickStudioUtilsplugin
 )
+
+foreach(lib IN LISTS QDS_COMPONENT_LIBS)
+    if(NOT TARGET ${lib}_linked)
+        add_library(${lib}_linked INTERFACE)
+        target_link_libraries(${lib}_linked INTERFACE ${lib})
+        target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE ${lib}_linked)
+    endif()
+endforeach()
 
 add_subdirectory(${ds_SOURCE_DIR} ${ds_BINARY_DIR})
 
