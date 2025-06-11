@@ -7,19 +7,13 @@ option(BUILD_QDS_COMPONENTS "Build design studio components" ON)
 
 project(Nasa_uiApp LANGUAGES CXX)
 
-# Find Catch2 headers
-find_path(CATCH2_INCLUDE_DIR catch2/catch_test_macros.hpp
-    PATHS /opt/homebrew/Cellar/catch2/3.8.1/include
-)
-if(NOT CATCH2_INCLUDE_DIR)
-    message(FATAL_ERROR "Catch2 headers not found")
-endif()
-include_directories(${CATCH2_INCLUDE_DIR})
+# Use CMake-configured Catch2
+find_package(Catch2 3 REQUIRED)
 
 include(FetchContent)
 
 set(CMAKE_AUTOMOC ON)
-set(CMAKE_CXX_STANDARD 20)  # lub 17/23
+set(CMAKE_CXX_STANDARD 20)
 add_compile_options(-Wall -Wextra -Wpedantic -Werror)
 
 find_package(Qt6 6.2 REQUIRED COMPONENTS Core Gui Qml Quick Positioning Svg)
@@ -89,4 +83,3 @@ install(TARGETS Nasa_uiApp
 # make IDEs aware of the QML import path
 set(QML_IMPORT_PATH ${PROJECT_BINARY_DIR}/qml CACHE PATH
     "Path to the custom QML components defined by the project")
-
