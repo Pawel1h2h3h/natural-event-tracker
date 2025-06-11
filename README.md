@@ -176,7 +176,7 @@ Abstrakcja zapytań HTTP z użyciem biblioteki **CPR**:
 
 ## 📌 Autorzy
 
-- Artur Sułowski
+- Igor Wiraszka
 - Paweł Lisowski
 - Rok: 2025
 - Przedmiot: PROI
