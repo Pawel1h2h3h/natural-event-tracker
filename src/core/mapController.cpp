@@ -1,7 +1,7 @@
 #include "mapController.hpp"
-#include "nasa_proj/src/event.hpp"
-#include "nasa_proj/src/category.hpp"
-#include "nasa_proj/src/fileHandler.hpp"
+#include "event.hpp"
+#include "category.hpp"
+#include "fileHandler.hpp"
 
 #include <QDebug>
 #include <QMap>

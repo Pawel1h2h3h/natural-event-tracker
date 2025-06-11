@@ -8,15 +8,15 @@ add_executable(tests
     test_fh.cpp
     test_api.cpp
     test_category.cpp
-    ../src/nasa_proj/src/apikey.cpp
-    ../src/nasa_proj/src/category.cpp
-    ../src/nasa_proj/src/event.cpp
-    ../src/nasa_proj/src/fileHandler.cpp
+    ../src/core/apikey.cpp
+    ../src/core/category.cpp
+    ../src/core/event.cpp
+    ../src/core/fileHandler.cpp
 )
 
 target_include_directories(tests PRIVATE
-    ../src
-    ../src/nasa_proj/src
+    ../src/core
+    ../src/include
 )
 
 target_link_libraries(tests
@@ -28,3 +28,7 @@ target_link_libraries(tests
 include(CTest)
 include(Catch)
 catch_discover_tests(tests)
+
+# Enable testing and add tests subdirectory
+enable_testing()
+add_subdirectory(tests)

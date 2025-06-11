@@ -1,10 +1,10 @@
 #pragma once
 
-#include "nasa_proj/src/category.hpp"
-#include "nasa_proj/src/event.hpp"
-#include "nasa_proj/src/fileHandler.hpp"
-#include "nasa_proj/src/apikey.hpp"
-#include "nasa_proj/src/category.hpp"
+#include "category.hpp"
+#include "event.hpp"
+#include "fileHandler.hpp"
+#include "apikey.hpp"
+#include "category.hpp"
 
 #include <iostream>
 #include <QObject>

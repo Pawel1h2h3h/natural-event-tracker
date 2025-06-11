@@ -74,12 +74,6 @@ std::vector<Event> FileHandler::createEvents() {
 std::vector<Event> FileHandler::createRecentEvents() {
     std::vector<Event> recentEvents;
 
-    // Debug output block (updated to reflect new structure)
-    std::cout << "j_data contains 'events': " << j_data.contains("events") << std::endl;
-    if (j_data.contains("events")) {
-        std::cout << "j_data['events'] is array: " << j_data["events"].is_array() << std::endl;
-    }
-
     if (j_data.contains("events") && j_data["events"].is_array()) {
         for (const auto& item : j_data["events"]) {
             Event evt(item);

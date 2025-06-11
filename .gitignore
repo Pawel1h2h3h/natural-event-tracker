@@ -1,5 +1,6 @@
 # Ignoruj katalog build (domyślny katalog dla plików budowania CMake)
 build/
+data/
 
 # Ignoruj katalogi z plikami vscode
 .vscode/

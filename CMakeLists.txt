@@ -24,6 +24,7 @@ add_compile_options(-Wall -Wextra -Wpedantic -Werror)
 
 find_package(Qt6 6.2 REQUIRED COMPONENTS Core Gui Qml Quick Positioning Svg)
 
+
 if (Qt6_VERSION VERSION_GREATER_EQUAL 6.3)
     qt_standard_project_setup()
 endif()
@@ -31,8 +32,9 @@ endif()
 
 
 qt_add_executable(Nasa_uiApp
-                    src/main.cpp
-                    src/mapController.cpp)
+    src/main.cpp
+    src/core/mapController.cpp
+)
 
 qt_add_resources(Nasa_uiApp "configuration"
     PREFIX "/"
@@ -49,6 +51,9 @@ target_link_libraries(Nasa_uiApp PRIVATE
     Qt6::Positioning
     Qt6::Svg
 )
+
+
+
 qt_policy(SET QTP0004 NEW)
 set(QT_QML_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/qml)
 set(QML_IMPORT_PATH ${QT_QML_OUTPUT_DIRECTORY}
@@ -68,12 +73,9 @@ endif ()
 
 include(GNUInstallDirs)
 
- # Dodanie podprojektu nasa_proj
-add_subdirectory(src/nasa_proj)
+add_subdirectory(src)
 
-# Enable testing and add tests subdirectory
-enable_testing()
-add_subdirectory(tests)
+
 
 # Podłączenie do aplikacji GUI
 target_link_libraries(Nasa_uiApp PRIVATE apikey_lib)
