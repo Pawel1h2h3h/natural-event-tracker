@@ -23,4 +23,6 @@ public:
     void requestCategories();
     void requestSingleEvent(const std::string& event_id);
     json getData();
+
+    ApiRequest getCurrentRequest();
 };

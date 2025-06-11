@@ -77,3 +77,7 @@ void Api::requestSingleEvent(const std::string& event_id) {
     current.url = cpr::Url{"https://eonet.gsfc.nasa.gov/api/v3/events/" + event_id};
     current.params = {};
 }
+
+ApiRequest Api::getCurrentRequest() {
+    return current;
+}

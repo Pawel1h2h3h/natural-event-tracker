@@ -4,7 +4,17 @@ option(LINK_INSIGHT "Link Qt Insight Tracker library" ON)
 option(BUILD_QDS_COMPONENTS "Build design studio components" ON)
 
 
+
 project(Nasa_uiApp LANGUAGES CXX)
+
+# Find Catch2 headers
+find_path(CATCH2_INCLUDE_DIR catch2/catch_test_macros.hpp
+    PATHS /opt/homebrew/Cellar/catch2/3.8.1/include
+)
+if(NOT CATCH2_INCLUDE_DIR)
+    message(FATAL_ERROR "Catch2 headers not found")
+endif()
+include_directories(${CATCH2_INCLUDE_DIR})
 
 include(FetchContent)
 
@@ -58,8 +68,12 @@ endif ()
 
 include(GNUInstallDirs)
 
-# Dodanie podprojektu nasa_proj
+ # Dodanie podprojektu nasa_proj
 add_subdirectory(src/nasa_proj)
+
+# Enable testing and add tests subdirectory
+enable_testing()
+add_subdirectory(tests)
 
 # Podłączenie do aplikacji GUI
 target_link_libraries(Nasa_uiApp PRIVATE apikey_lib)

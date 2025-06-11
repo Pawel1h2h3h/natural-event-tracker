@@ -164,3 +164,16 @@ json Event::toJson() const {
 void Event::print_json_repr() const {
     std::cout << toJson().dump(4);
 }
+
+std::pair<double, double> Event::getPos() const {
+    if (!geometry.empty() && geometry[0].coordinates.size() >= 2)
+        return {geometry[0].coordinates[0], geometry[0].coordinates[1]};
+    return {0.0, 0.0};
+}
+
+void Event::setPos(double lat, double lon) {
+    Geometry g;
+    g.coordinates = {lat, lon};
+    geometry.clear();
+    geometry.push_back(g);
+}

@@ -13,7 +13,7 @@ Rectangle {
     id: rectangle1
     width: Constants.width
     height: Constants.height
-    color: "#bbbcde"
+    color: "#cbe2d8"
 
     ListModel {
     id: eventModel
